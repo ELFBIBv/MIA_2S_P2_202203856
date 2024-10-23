@@ -1,0 +1,38 @@
+digraph G {
+node [shape=plaintext];
+fontname="Courier New";
+title [label="Reporte MBR"];
+mbrTable [label=<
+<table border='1' cellborder='1' cellspacing='0'>
+<tr><td bgcolor="blue" colspan='2'>MBR</td></tr>
+<tr><td>Tamaño</td><td>20971520</td></tr>
+<tr><td>Fecha De Creación</td><td>2024-09-19 22:19</td></tr>
+<tr><td>Ajuste</td><td>w</td></tr>
+<tr><td>Signature</td><td>525333315</td></tr>
+</table>
+>];
+PA1 [label=<
+<table border='1' cellborder='1' cellspacing='0'>
+<tr><td bgcolor="red" colspan='2'>Partición 1</td></tr>
+<tr><td>Estado</td><td>1</td></tr>
+<tr><td>Tipo</td><td>p</td></tr>
+<tr><td>Ajuste</td><td>b</td></tr>
+<tr><td>Incio</td><td>5243045</td></tr>
+<tr><td>Tamaño</td><td>5242880</td></tr>
+<tr><td>Nombre</td><td>part53</td></tr>
+<tr><td>Correlativo</td><td>2</td></tr>
+</table>
+>];
+PA2 [label=<
+<table border='1' cellborder='1' cellspacing='0'>
+<tr><td bgcolor="red" colspan='2'>Partición 2</td></tr>
+<tr><td>Estado</td><td>0</td></tr>
+<tr><td>Tipo</td><td>p</td></tr>
+<tr><td>Ajuste</td><td>b</td></tr>
+<tr><td>Incio</td><td>5243045</td></tr>
+<tr><td>Tamaño</td><td>5242880</td></tr>
+<tr><td>Nombre</td><td>part53</td></tr>
+<tr><td>Correlativo</td><td>2</td></tr>
+</table>
+>];
+}

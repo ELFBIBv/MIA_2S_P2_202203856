@@ -1,0 +1,19 @@
+digraph G {
+labelloc="t"
+node [shape=plaintext];
+fontname="Courier New";
+title [label="Reporte Disk"];
+subgraph cluster1 {
+fontname="Courier New";
+label=""
+disco [shape=none label=<
+<TABLE border="0" cellspacing="4" cellpadding="5" color="skyblue">
+<TR><TD bgcolor="#a7d0d2" border="1" cellpadding="65">MBR</TD>
+<TD bgcolor="#4697b4" border="1" cellpadding="20">Partición Primaria 1<br/>25.00% del Disco</TD>
+<TD bgcolor="#4697b4" border="1" cellpadding="20">Partición Primaria 2<br/>25.00% del Disco</TD>
+<TD bgcolor="#f1e6d2" border="1" cellpadding="20">Espacio Libre<br/>50.00% del Disco</TD>
+</TR>
+</TABLE>
+>];
+}
+}

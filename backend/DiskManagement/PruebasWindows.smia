@@ -1,0 +1,38 @@
+
+//error de espacio insuficiente.
+-MkdiSk -sIzE=2000 -unit=k -PaTh="D:/Users/jm543/proyectos MIA/Proyecto1/particiones/Disk1.mia"
+-mkdisk -size=3000 -unit=K -fit=BF -path="/home/alvaro/Disks/disk1.mia"
+-mkdisk -size=3000 -unit=K -fit=BF -path="D:/Users/jm543/pruebasxd/disk1.mia"
+
+-rmdisk -path="D:/Users/jm543/proyectos MIA/Proyecto1/particiones/Disk1.mia"
+
+-fdisk -type=P -unit=K -fit=BF -size=1000 -path="D:/Users/jm543/proyectos MIA/Proyecto1/particiones/Disk1.mia" -name=Particion1
+-fdisk -type=P -unit=K -fit=BF -size=1000 -path="D:/Users/jm543/proyectos MIA/Proyecto1/particiones/Disk1.mia" -name=Particion2
+-fdisk -type=P -unit=K -fit=BF -size=1000 -path="D:/Users/jm543/proyectos MIA/Proyecto1/particiones/Disk1.mia" -name=Particion3
+
+
+// otro xd
+-rmdisk -PaTh="D:/Users/jm543/proyectos MIA/Proyecto1/particiones/Disk1.mia"
+-MkdiSk -sIzE=2000 -unit=k -PaTh="D:/Users/jm543/proyectos MIA/Proyecto1/particiones/Disk1.mia"
+
+-fdisk -type=P -unit=K -fit=BF -size=1000 -path="D:/Users/jm543/proyectos MIA/Proyecto1/particiones/Disk1.mia" -name=Particion1
+-fdisk -type=P -unit=K -size=1000 -path="D:/Users/jm543/proyectos MIA/Proyecto1/particiones/Disk1.mia" -name=Particion2
+-fdisk -type=P -unit=K -fit=BF -size=1000 -path="D:/Users/jm543/proyectos MIA/Proyecto1/particiones/Disk1.mia" -name=Particion3
+
+//
+-mkdisk -Size=3000 -unit=K -path="D:/Users/jm543/proyectos MIA/Proyecto1/particiones/Disco1.mia"
+-mkdisk -path="D:/Users/jm543/proyectos MIA/Proyecto1/particiones/Disco2.mia" -Unit=K -size=3000
+-mkdisk -size=5 -unit=M -path="D:/Users/jm543/proyectos MIA/Proyecto1/particiones/Disco3.mia"
+-mkdisk -size=2 -path="D:/Users/jm543/proyectos MIA/Proyecto1/particiones/Disco4.mia"
+
+-rmdisk -path="D:/Users/jm543/proyectos MIA/Proyecto1/particiones/Disco4.mia"
+
+-fdisk -Size=300 -path="D:/Users/jm543/proyectos MIA/Proyecto1/particiones/Disco1.mia" -name=Particion1
+-fdisk -type=E -path="D:/Users/jm543/proyectos MIA/Proyecto1/particiones/Disco2.mia" -Unit=K -name=Particion2 -size=300
+-fdisk -size=1 -type=L -unit=M -fit=BF -path="D:/Users/jm543/proyectos MIA/Proyecto1/particiones/Disco3.mia" -name="Particion3"
+-fdisk -type=E -path="D:/Users/jm543/proyectos MIA/Proyecto1/particiones/Disco2.mia" -name=Part3 -Unit=K -size=200
+
+-mount -path="D:/Users/jm543/proyectos MIA/Proyecto1/particiones/Disco2.mia" -name=Particion2
+-mount -path="D:/Users/jm543/proyectos MIA/Proyecto1/particiones/Disco2.mia" -name=Part3
+-mount -path="D:/Users/jm543/proyectos MIA/Proyecto1/particiones/Disco1.mia" -name=Particion1
+-mount -path="D:/Users/jm543/proyectos MIA/Proyecto1/particiones/Disco3.mia" -name=Particion3
