@@ -19,22 +19,35 @@ const Execution = () => {
         consolaRef.current = editor;
     }
 
-    const runCode = () => {
+    const runCode = async () => {
         cleanOutput();
         const code = editorRef.current.getValue();
-        fetch('http://localhost:8080/execute', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ code: code })
-        })
-            .then((resp) => resp.json())
-            .then(data => {
-                setOutput(data.output);
-                consolaRef.current.setValue(data.output);
-            })
-            .catch(error => console.error('hubo un problema con la ejecucion del fetch:', error));
+        if (!code) {
+            return;
+        }
+        try {
+            const response = await fetch('http://localhost:8080/execute', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ code: code })
+            });
+
+            // Si el estado no es ok, arroja un error con el contenido de la respuesta
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || `Error en el servidor: ${response.statusText}`);
+            }
+
+            // Devolver la respuesta en JSON si todo está bien
+            const data = await response.json();
+            setOutput(data.output);
+            consolaRef.current.setValue(data.output);
+        } catch (error) {
+            // Capturar cualquier error durante la solicitud
+            throw new Error(error.message || "Error al enviar el comando");
+        }
     };
 
     const cleanOutput = () => {
@@ -74,11 +87,20 @@ const Execution = () => {
 
 
     useEffect(() => {
+        // Establecer un umbral para cambios significativos en tamaño
         const resizeObserver = new ResizeObserver(debounce(entries => {
-            // No se necesita lógica específica aquí
-        }, 100)); // Ajusta el tiempo según sea necesario
+            const { contentRect } = entries[0];
+            // Verificar si hay un cambio significativo de tamaño (más de 20px)
+            if (Math.abs(contentRect.width - contentRect.height) > 20) {
+                console.log("El contenedor ha cambiado de tamaño significativamente.");
+                // Aquí podrías colocar lógica adicional si fuera necesario
+            }
+        }, 500)); // Un debounce de 300 ms suele ser más que suficiente
 
-        resizeObserver.observe(document.querySelector('#output'));
+        const outputElement = document.querySelector('#output');
+        if (outputElement) {
+            resizeObserver.observe(outputElement);
+        }
 
         return () => {
             resizeObserver.disconnect();
