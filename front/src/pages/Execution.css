@@ -1,0 +1,56 @@
+:root {
+  --btn-bg-color: rgb(30, 144, 255); /* Color azul */
+  --btn-bg-hover-color: rgb(24, 119, 204); /* Color azul más oscuro para el hover */
+}
+
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  max-width: 1200px;
+  margin: 20px auto;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px; /* Espacio entre los botones */
+}
+
+.btn, .custom-file-upload { /* Estilos para todos los botones */
+  padding: 10px 20px;
+  background-color: var(--btn-bg-color) !important; /* Aseguramos el color con !important */
+  color: white !important;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px; /* Tamaño de letra ligeramente más grande */
+  text-align: center;
+}
+
+.btn:hover, .custom-file-upload:hover {
+  background-color: var(--btn-bg-hover-color) !important;
+}
+
+#file-name {
+  margin-left: auto;
+  font-size: 16px;
+  color: #333;
+}
