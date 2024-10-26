@@ -45,12 +45,23 @@ func Mkdisk(size int, fit string, unit string, path string) error {
 		return err
 	}
 
-	// Escribir los 0 en el archivo
-	for i := 0; i < size; i++ {
-		err := Utilities.WriteObject(file, byte('0'), int64(i))
-		if err != nil {
-			fmt.Println("Error: ", err)
+	// Escribir ceros en el archivo (optimizado)
+	blockSize := 1024 * 1024
+	zeroBlock := make([]byte, blockSize) // Crear un bloque de ceros
+
+	remainingSize := size
+
+	for remainingSize > 0 {
+		if remainingSize < blockSize {
+			// Escribe lo que queda si es menor que el tamaño del bloque
+			zeroBlock = make([]byte, remainingSize)
 		}
+		_, err := file.Write(zeroBlock)
+		if err != nil {
+			fmt.Println("Error escribiendo ceros:", err)
+			return err
+		}
+		remainingSize -= blockSize
 	}
 
 	// Crear MRB

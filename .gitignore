@@ -1,5 +1,6 @@
 .idea
 backend/.air.toml
 backend/tmp
+backend/discos
 particiones
 backend/DiskManagement/PruebasLinux.smia

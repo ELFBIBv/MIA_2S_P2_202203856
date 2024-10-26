@@ -16,8 +16,6 @@ var Salida = ""
 var LoggedPartitionID = ""
 var UserPermissions = [3]byte{'0', '0', '0'}
 
-//input := "mkdisk -size=3000 -unit=K -fit=BF -path=/home/bang/Disks/disk1.bin"
-
 func getCommandAndParams(input string) (string, string, string) {
 	reIgnorarComentarios := regexp.MustCompile(`#.*`)
 	comentario := ""
@@ -40,7 +38,7 @@ func Analyze(Script string) {
 	Scripts := strings.Split(Script, "\n")
 	Salida = ""
 
-	re := regexp.MustCompile(`-(\w+)(="[^"]+"|=\w+|=/\S+)?`)
+	re := regexp.MustCompile(`-(\w+)(="[^"]+"|=\w+|=-\w+|=/\S+)?`)
 
 	for _, v := range Scripts {
 		//var input string
@@ -91,7 +89,7 @@ func Analyze(Script string) {
 			err = fnMkfile(matches)
 		} else if strings.Contains(command, "mkdir") {
 			err = fnMkdir(matches)
-		} else if strings.Contains(command, "rep") { //este comando no esta implementado
+		} else if strings.Contains(command, "rep") {
 			err = fnRep(matches)
 		} else {
 			err = errors.New("Commando '" + command + "' invalido o no encontrado")
@@ -130,7 +128,9 @@ func fnMkdisk(matches [][]string) error {
 
 		flagName := strings.ToLower(match[1])  // match[1]: Captura y guarda el nombre del flag (por ejemplo, "size", "unit", "fit", "path")
 		flagValue := strings.ToLower(match[2]) //trings.ToLower(match[2]): Captura y guarda el valor del flag, asegurándose de que esté en minúsculas
-
+		if flagName == "path" {
+			flagValue = match[2]
+		}
 		flagValue = strings.Trim(flagValue, "=")
 		flagValue = strings.Trim(flagValue, "\"")
 
@@ -170,6 +170,9 @@ func fnRmdisk(matches [][]string) error {
 	for _, match := range matches {
 		flagName := strings.ToLower(match[1])  // match[1]: Captura y guarda el nombre del flag (por ejemplo, "size", "unit", "fit", "path")
 		flagValue := strings.ToLower(match[2]) //trings.ToLower(match[2]): Captura y guarda el valor del flag, asegurándose de que esté en minúsculas
+		if flagName == "path" {
+			flagValue = match[2]
+		}
 
 		flagValue = strings.Trim(flagValue, "=")
 		flagValue = strings.Trim(flagValue, "\"")
@@ -202,6 +205,9 @@ func fnFdisk(matches [][]string) error {
 	type_ := fs.String("type", "p", "Tipo")
 	fit := fs.String("fit", "wf", "Ajuste")
 	name := fs.String("name", "", "Nombre")
+	delete_ := fs.String("delete", "", "Eliminar partición (Fast/Full)")
+	add := fs.Int("add", 0, "Agregar espacio a la partición")
+	primero := ""
 
 	// Parsear los flags
 	err := fs.Parse(os.Args[1:])
@@ -212,13 +218,23 @@ func fnFdisk(matches [][]string) error {
 	// Procesar el input
 	for _, match := range matches {
 		flagName := strings.ToLower(match[1])
-		flagValue := strings.ToLower(match[2])
+		flagValue := strings.ToLower(match[2]) //trings.ToLower(match[2]): Captura y guarda el valor del flag, asegurándose de que esté en minúsculas
+		if flagName == "path" {
+			flagValue = match[2]
+		}
 
 		flagValue = strings.Trim(flagValue, "=")
 		flagValue = strings.Trim(flagValue, "\"")
 
 		switch flagName {
-		case "size", "fit", "unit", "path", "name", "type":
+		case "size", "fit", "unit", "path", "name", "type", "delete", "add":
+			switch flagName {
+			case "size", "delete", "add":
+				if primero != "" {
+					continue
+				}
+				primero = flagName
+			}
 			err := fs.Set(flagName, flagValue)
 			if err != nil {
 				return err
@@ -229,7 +245,7 @@ func fnFdisk(matches [][]string) error {
 	}
 
 	// Llamar a la función
-	if err := Commands.Fdisk(*size, *path, *name, *unit, *type_, *fit); err != nil {
+	if err := Commands.Fdisk(*size, *path, *name, *unit, *type_, *fit, *delete_, *add); err != nil {
 		return err
 	}
 	Salida += fmt.Sprintf("\nPartición creada con éxito en la ruta: %s", *path)
@@ -248,7 +264,10 @@ func fnMount(matches [][]string) error {
 
 	for _, match := range matches {
 		flagName := strings.ToLower(match[1])
-		flagValue := strings.ToLower(match[2]) // Convertir a minusculas
+		flagValue := strings.ToLower(match[2]) //trings.ToLower(match[2]): Captura y guarda el valor del flag, asegurándose de que esté en minúsculas
+		if flagName == "path" {
+			flagValue = match[2]
+		}
 
 		flagValue = strings.Trim(flagValue, "=")
 		flagValue = strings.Trim(flagValue, "\"") //quitamos todos los " del string
@@ -693,8 +712,10 @@ func fnMkfile(matches [][]string) error {
 			}
 		}
 
-		flagValue := match[2]
-		flagValue = strings.ToLower(flagValue)
+		flagValue := strings.ToLower(match[2]) //trings.ToLower(match[2]): Captura y guarda el valor del flag, asegurándose de que esté en minúsculas
+		if flagName == "path" {
+			flagValue = match[2]
+		}
 
 		flagValue = strings.Trim(flagValue, "=")
 		flagValue = strings.Trim(flagValue, "\"")
@@ -742,8 +763,10 @@ func fnMkdir(matches [][]string) error {
 			}
 		}
 
-		flagValue := match[2]
-		flagValue = strings.ToLower(flagValue)
+		flagValue := strings.ToLower(match[2]) //trings.ToLower(match[2]): Captura y guarda el valor del flag, asegurándose de que esté en minúsculas
+		if flagName == "path" {
+			flagValue = match[2]
+		}
 
 		flagValue = strings.Trim(flagValue, "=")
 		flagValue = strings.Trim(flagValue, "\"")
@@ -782,10 +805,12 @@ func fnRep(matches [][]string) error {
 
 	for _, match := range matches {
 		flagName := match[1]
-		flagValue := match[2]
 
 		flagName = strings.ToLower(flagName)
-		flagValue = strings.ToLower(flagValue)
+		flagValue := strings.ToLower(match[2]) //trings.ToLower(match[2]): Captura y guarda el valor del flag, asegurándose de que esté en minúsculas
+		if flagName == "path" {
+			flagValue = match[2]
+		}
 
 		flagValue = strings.Trim(flagValue, "=")
 		flagValue = strings.Trim(flagValue, "\"")
