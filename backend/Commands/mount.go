@@ -8,7 +8,6 @@ import (
 	"proyecto1/DiskManagement"
 	"proyecto1/Structs"
 	"proyecto1/Utilities"
-	"strings"
 )
 
 // Mount Función para montar particiones
@@ -75,7 +74,8 @@ func Mount(path string, name string) error {
 	//fmt.Printf("Partición encontrada: '%s' en posición %d\n", string(partition.Name[:]), partitionIndex+1)
 
 	// Generar el ID de la partición
-	diskID := generateDiskID(path)
+	diskID := path
+	fmt.Println("ID del disco:", diskID)
 
 	// Verificar si ya se ha montado alguna partición de este disco
 	mountedPartitionsInDisk := mountedPartitions[diskID]
@@ -112,7 +112,7 @@ func Mount(path string, name string) error {
 	partition.Status[0] = '1'
 	copy(partition.Id[:], partitionID)
 	TempMBR.Partitions[len(mountedPartitions[diskID])] = partition
-	mountedPartitions[diskID] = append(mountedPartitions[diskID], DiskManagement.MountedPartition{
+	mountedPartitions[diskID] = append(mountedPartitions[diskID], Structs.MountedPartition{
 		Path:   path,
 		Name:   name,
 		ID:     partitionID,
@@ -147,8 +147,4 @@ func getLastDiskID() string {
 		lastDiskID = diskID
 	}
 	return lastDiskID
-}
-
-func generateDiskID(path string) string {
-	return strings.ToLower(path)
 }

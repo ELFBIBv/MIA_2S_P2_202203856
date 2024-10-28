@@ -34,21 +34,29 @@ const Execution = () => {
                 body: JSON.stringify({ code: code })
             });
 
-            // Si el estado no es ok, arroja un error con el contenido de la respuesta
+            // Verificar si la respuesta tiene estado HTTP fuera del rango 2xx (errores de estado HTTP)
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.error || `Error en el servidor: ${response.statusText}`);
+                throw new Error(errorData.error || `Error en el servidor: ${response.statusText} (Código: ${response.status})`);
             }
 
-            // Devolver la respuesta en JSON si todo está bien
+            // Si la solicitud fue exitosa, procesar la respuesta
             const data = await response.json();
             setOutput(data.output);
             consolaRef.current.setValue(data.output);
+
         } catch (error) {
-            // Capturar cualquier error durante la solicitud
-            throw new Error(error.message || "Error al enviar el comando");
+            // Verificar si el error es de red o de otro tipo
+            if (error.name === 'TypeError' && error.message === 'Failed to fetch') {
+                // Error de conexión con el servidor
+                setOutput("Error: No se pudo conectar con el servidor. Verifica la conexión.");
+            } else {
+                // Otros tipos de errores, como errores de estado HTTP o JSON inválido
+                setOutput("Error: " + error.message);
+            }
         }
     };
+
 
     const cleanOutput = () => {
         setOutput(valorDefault);

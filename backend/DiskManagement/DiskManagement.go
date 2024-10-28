@@ -8,17 +8,9 @@ import (
 	"strings"
 )
 
-// MountedPartition Estructura para representar una partición montada
-type MountedPartition struct {
-	Path     string
-	Name     string
-	ID       string
-	Status   byte // 0: no montada, 1: montada
-	LoggedIn bool // true: usuario ha iniciado sesión, false: no ha iniciado sesión
-}
-
 // Mapa para almacenar las particiones montadas, organizadas por disco
-var MountedPartitions = make(map[string][]MountedPartition)
+// la key es el path del disco
+var MountedPartitions = make(map[string][]Structs.MountedPartition)
 
 // PrintMountedPartitions Función para imprimir las particiones montadas
 func PrintMountedPartitions() {
@@ -44,7 +36,7 @@ func PrintMountedPartitions() {
 }
 
 // GetMountedPartitions Función para obtener las particiones montadas
-func GetMountedPartitions() map[string][]MountedPartition {
+func GetMountedPartitions() map[string][]Structs.MountedPartition {
 	return MountedPartitions
 }
 
@@ -75,9 +67,9 @@ func MarkPartitionAsLoggedOut(id string) {
 	fmt.Printf("No se encontró la partición con ID %s para marcarla como deslogueada.\n", id)
 }
 
-func GetMountedPartitionByID(id string) (error, MountedPartition, int64) {
+func GetMountedPartitionByID(id string) (error, Structs.MountedPartition, int64) {
 	var partitionFound bool
-	var mountedPartition MountedPartition
+	var mountedPartition Structs.MountedPartition
 
 	for _, partitions := range GetMountedPartitions() {
 		for _, partition := range partitions {

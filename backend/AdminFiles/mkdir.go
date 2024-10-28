@@ -25,7 +25,7 @@ func Mkdir(path string, p bool, idPartition string) error {
 	fmt.Println("p:", p)
 	fmt.Println("idPartition:", idPartition)
 
-	var mountedPartition DiskManagement.MountedPartition
+	var mountedPartition Structs.MountedPartition
 	var index int64 = 0
 
 	err, mountedPartition, index = DiskManagement.GetMountedPartitionByID(idPartition)

@@ -19,7 +19,7 @@ func Mkfs(id string, type_ string) error {
 	fmt.Println("Type:", type_)
 
 	// Buscar la partición montada por ID
-	var mountedPartition DiskManagement.MountedPartition
+	var mountedPartition Structs.MountedPartition
 	var partitionFound bool
 
 	for _, partitions := range DiskManagement.GetMountedPartitions() {
@@ -182,7 +182,7 @@ func createExt2(n int32, partition Structs.Partition, newSuperblock Structs.Supe
 		return err
 	}
 
-	fmt.Print("el superbloque se escribio en el byte:" + string(partition.Start))
+	fmt.Printf("el superbloque se escribio en el byte: %d\n", partition.Start)
 
 	// Escribe el superbloque actualizado al archivo
 	if err := Utilities.WriteObject(file, newSuperblock, int64(partition.Start)); err != nil {

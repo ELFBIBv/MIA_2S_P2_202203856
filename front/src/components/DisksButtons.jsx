@@ -24,7 +24,7 @@ const DisksButtons = ({disks, fetchPartitions,getDiskName }) => {
                         </div>
                     ));
                 } else {
-                    return <p>No se han creado discos aún.</p>;
+                    return <p>No hay discos con particiones montadas</p>;
                 }
             })()}
         </div>

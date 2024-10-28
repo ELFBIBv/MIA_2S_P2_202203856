@@ -15,7 +15,7 @@ import (
 )
 
 func RepMBR(id string, path string) error {
-	var ParticionesMontadas DiskManagement.MountedPartition
+	var ParticionesMontadas Structs.MountedPartition
 	var ParticionEncontrada bool
 
 	for _, Particiones := range DiskManagement.GetMountedPartitions() {
@@ -155,7 +155,7 @@ func RepMBR(id string, path string) error {
 }
 
 func RepDisk(id string, path string) error {
-	var ParticionesMontadas DiskManagement.MountedPartition
+	var ParticionesMontadas Structs.MountedPartition
 	var ParticionEncontrada bool
 
 	for _, Particiones := range DiskManagement.GetMountedPartitions() {
@@ -302,7 +302,7 @@ func RepDisk(id string, path string) error {
 }
 
 func RepSB(id string, path string) error {
-	var ParticionesMontadas DiskManagement.MountedPartition
+	var ParticionesMontadas Structs.MountedPartition
 	var ParticionEncontrada bool
 
 	for _, Particiones := range DiskManagement.GetMountedPartitions() {
@@ -423,7 +423,7 @@ func RepSB(id string, path string) error {
 }
 
 func RepInode(id string, path string) error {
-	var ParticionesMontadas DiskManagement.MountedPartition
+	var ParticionesMontadas Structs.MountedPartition
 	var ParticionEncontrada bool
 
 	for _, Particiones := range DiskManagement.GetMountedPartitions() {
@@ -563,7 +563,7 @@ func RepBMInode(id string, path string) error {
 		}
 	}
 
-	var ParticionesMontadas DiskManagement.MountedPartition
+	var ParticionesMontadas Structs.MountedPartition
 	var ParticionEncontrada bool
 
 	for _, Particiones := range DiskManagement.GetMountedPartitions() {
@@ -671,7 +671,7 @@ func RepBMBlock(id string, path string) error {
 		}
 	}
 
-	var ParticionesMontadas DiskManagement.MountedPartition
+	var ParticionesMontadas Structs.MountedPartition
 	var ParticionEncontrada bool
 
 	for _, Particiones := range DiskManagement.GetMountedPartitions() {

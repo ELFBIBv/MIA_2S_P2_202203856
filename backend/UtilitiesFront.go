@@ -65,6 +65,7 @@ type files struct {
 
 func recolectFiles(filePath string, diskPath string, partitionName string) (error, []files) {
 	// Abrir el archivo binario
+
 	file, err := Utilities.OpenFile(diskPath) //abrimos el disco
 	if err != nil {
 		fmt.Println("Error: No se pudo abrir el archivo en la ruta:", diskPath)
@@ -111,12 +112,17 @@ func recolectFiles(filePath string, diskPath string, partitionName string) (erro
 		return err, nil
 	}
 
+	Structs.PrintMBR(MBRTemporal)
+	fmt.Printf("posicion sb: %d\n", MBRTemporal.Partitions[index].Start)
+
 	//vamos a obtener el superbloque
 	var sb = Structs.Superblock{}
 	if err := Utilities.ReadObject(file, &sb, int64(MBRTemporal.Partitions[index].Start)); err != nil {
 		fmt.Println("Error REP SB: Error al leer el SuperBloque.")
 		return err, nil
 	}
+
+	Structs.PrintSuperblock(sb)
 
 	// este es el numero de inodo del archivo
 	inode_number := FileSystem.SearchInodeByPath(filePath, file, sb)
@@ -129,7 +135,11 @@ func recolectFiles(filePath string, diskPath string, partitionName string) (erro
 	var inode = Structs.Inode{}
 	posicion := sb.S_inode_start + inode_number*sb.S_inode_size
 	if err := Utilities.ReadObject(file, &inode, int64(posicion)); err != nil {
-		fmt.Println("Error REP: Error al leer el Inodo.")
+		fmt.Printf("Error REP: Error al leer el Inodo %d\n", inode_number)
+		fmt.Printf("posicion del inodo: %d\n", posicion)
+		fmt.Printf("inicio de inodos: %d\n", sb.S_inode_start)
+		fmt.Printf("tamaño del inodo: %d\n", sb.S_inode_size)
+		fmt.Printf("tamaño del inodo 2: %d\n", inode.I_size)
 		return err, nil
 	}
 
@@ -174,7 +184,7 @@ func recolectFiles(filePath string, diskPath string, partitionName string) (erro
 			name = strings.ReplaceAll(name, "\t", "")
 			fmt.Println("Nombre del archivo: ", name)
 
-			if name == "" {
+			if block.B_content[indexContent].B_inodo == -1 {
 				break
 			}
 			file.Name = name

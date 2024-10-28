@@ -22,7 +22,8 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/execute", executeCode).Methods("POST")
 	r.HandleFunc("/readmbr", ReadMBRHandler).Methods("POST")
-	r.HandleFunc("/getPathDisks", GetPathDisks).Methods("GET")
+	r.HandleFunc("/getPathDisks", GetPathMountedDisks).Methods("GET")
+	r.HandleFunc("/getMountedPartitionsForPathDisk", GetMountedPartitionForPathDisk).Methods("POST")
 	r.HandleFunc("/readfiles", ReadFilesHandler).Methods("POST")
 
 	c := cors.New(cors.Options{

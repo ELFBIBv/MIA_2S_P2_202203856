@@ -17,7 +17,7 @@ var LoggedPartitionID = ""
 var UserPermissions = [3]byte{'0', '0', '0'}
 
 // inicializar un array de strings para guardar los paths de los discos
-var PathDisks []string
+var PathDisksMounted []string
 
 func getCommandAndParams(input string) (string, string, string) {
 	reIgnorarComentarios := regexp.MustCompile(`#.*`)
@@ -40,6 +40,7 @@ func Analyze(Script string) {
 	// leemos linea por linea del script
 	Scripts := strings.Split(Script, "\n")
 	Salida = ""
+	PathDisksMounted = []string{}
 
 	re := regexp.MustCompile(`-(\w+)(="[^"]+"|=\w+|=-\w+|=/\S+)?`)
 
@@ -153,15 +154,6 @@ func fnMkdisk(matches [][]string) error {
 		return err
 	}
 	Salida += fmt.Sprintf("\nDisco creado con éxito en la ruta: %s", *path)
-	//agregamos el path del disco a la lista de discos
-	//pero no debe de estar duplicado
-	//si ya existe no lo agregamos
-	for _, v := range PathDisks {
-		if v == *path {
-			return nil
-		}
-	}
-	PathDisks = append(PathDisks, *path)
 	return nil
 }
 
@@ -205,14 +197,6 @@ func fnRmdisk(matches [][]string) error {
 		return err
 	}
 	Salida += fmt.Sprintf("\nDisco eliminado con éxito en la ruta: %s", *path)
-	//eliminamos el path del disco de la lista de discos
-	var result []string
-	for _, v := range PathDisks {
-		if v != *path { //si es diferente lo agrega, si no no xd
-			result = append(result, v)
-		}
-	}
-	PathDisks = result
 	return nil
 }
 
@@ -308,6 +292,9 @@ func fnMount(matches [][]string) error {
 		return err
 	}
 	Salida += fmt.Sprintf("\nPartición montada con éxito en la ruta: %s", *path)
+	//agregamos las particiones montadas
+	PathDisksMounted = append(PathDisksMounted, *path)
+	fmt.Println("PathDisksMounted: ", PathDisksMounted)
 	return nil
 }
 

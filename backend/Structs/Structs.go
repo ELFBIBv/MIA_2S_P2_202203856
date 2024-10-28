@@ -44,6 +44,15 @@ func PrintPartition(data Partition) {
 		string(data.Id[:])))
 }
 
+// MountedPartition Estructura para representar una partición montada
+type MountedPartition struct {
+	Path     string
+	Name     string
+	ID       string
+	Status   byte // 0: no montada, 1: montada
+	LoggedIn bool // true: usuario ha iniciado sesión, false: no ha iniciado sesión
+}
+
 type EBR struct {
 	PartMount byte
 	PartFit   byte

@@ -10,13 +10,13 @@ const PartitionsButtons = ({partitions, fetchFilesSystem }) => {
                             <div
                                 className="custom-card" /* Clase personalizada */
                                 style={{cursor: "pointer", padding: "10px"}} /* Reducir padding */
-                                onClick={() => fetchFilesSystem(partition.name)}
+                                onClick={() => fetchFilesSystem(partition.Name)}
                             >
                                 <div id="PartitionImage" className="p-1"> {/* Ajustar padding de la imagen */}
                                 </div>
                                 <div>
                                     <h5 className="card-title text-center" style={{whiteSpace: "nowrap"}}>
-                                        {partition.name}
+                                        {partition.Name}
                                     </h5>
                                 </div>
                             </div>
