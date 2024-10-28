@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 	"proyecto1/Analyzer"
-	"proyecto1/Utilities"
 )
 
 func executeCode(w http.ResponseWriter, r *http.Request) {
@@ -49,13 +48,50 @@ func ReadMBRHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		// Leer el MBR y obtener las particiones
-		partitions, err := Utilities.ListPartitions(params.Path)
+		partitions, err := ListPartitions(params.Path)
 		if err != nil {
 			http.Error(w, fmt.Sprintf("Error al leer las particiones: %v", err), http.StatusInternalServerError)
 			return
 		}
 		// Responder con las particiones en formato JSON
 		json.NewEncoder(w).Encode(partitions)
+	} else {
+		http.Error(w, "Método no permitido", http.StatusMethodNotAllowed)
+	}
+}
+
+// vamos a retornar el path de todos los discos guardados en analizer
+func GetPathDisks(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(Analyzer.PathDisks)
+}
+
+func ReadFilesHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodPost {
+		var req CodeExecutionRequest
+
+		// Decodificar el cuerpo JSON de la solicitud
+		err := json.NewDecoder(r.Body).Decode(&req)
+		if err != nil {
+			http.Error(w, "Error al procesar la solicitud", http.StatusBadRequest)
+			return
+		}
+
+		// Validaciones
+		if req.FilePath == "" || req.DiskPath == "" || req.PartitionName == "" {
+			http.Error(w, "Todos los parámetros son requeridos", http.StatusBadRequest)
+			return
+		}
+
+		// Llamar a recolectFiles para obtener los archivos
+		erro, arrayFiles := recolectFiles(req.FilePath, req.DiskPath, req.PartitionName)
+		if erro != nil {
+			http.Error(w, fmt.Sprintf("Error al recolectar los archivos: %v", erro), http.StatusInternalServerError)
+			return
+		}
+
+		// Responder con el array de archivos en formato JSON
+		json.NewEncoder(w).Encode(arrayFiles)
 	} else {
 		http.Error(w, "Método no permitido", http.StatusMethodNotAllowed)
 	}

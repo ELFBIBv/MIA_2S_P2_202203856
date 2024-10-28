@@ -1,0 +1,44 @@
+.custom-card {
+    border: none; /* Quita el borde gris */
+    background-color: transparent; /* Fondo transparente */
+    display: inline-block;
+    text-align: center;
+    padding: 0;
+}
+
+#DiskImage {
+    background-image: url('/public/HardDisk.png'); /* Ruta de la imagen */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 60px; /* Tamaño más pequeño como la segunda imagen */
+    height: 60px;
+    margin: 0 auto; /* Centrar imagen */
+}
+
+#PartitionImage {
+    background-image: url('/public/Partition.png'); /* Ruta de la imagen */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 60px; /* Tamaño más pequeño como la segunda imagen */
+    height: 60px;
+    margin: 0 auto; /* Centrar imagen */
+}
+
+#FolderImage {
+    background-image: url('/public/Folder.png'); /* Ruta de la imagen */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 60px; /* Tamaño más pequeño como la segunda imagen */
+    height: 60px;
+    margin: 0 auto; /* Centrar imagen */
+}
+
+.card-title {
+    font-size: 0.9rem; /* Ajustar el tamaño del texto */
+    margin-top: 5px;
+    white-space: nowrap;
+    text-align: center;
+}

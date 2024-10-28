@@ -45,12 +45,8 @@ func Mkfile(path string, r bool, size int, cont string, idPartition string) erro
 	}
 
 	var tempSuperblock Structs.Superblock
-	//var partition Structs.Partition
-
-	//partition := TempMBR.Partitions[index]
 
 	// Leer el Superblock desde el archivo binario
-
 	if err := Utilities.ReadObject(file, &tempSuperblock, int64(TempMBR.Partitions[index].Start)); err != nil {
 		fmt.Println("Error: No se pudo leer el Superblock:", err)
 		return fmt.Errorf("error al leer el Superblock: %w", err)

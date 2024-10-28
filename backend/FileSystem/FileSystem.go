@@ -54,6 +54,10 @@ func SearchInodeByPath(path string, file *os.File, tempSuperblock Structs.Superb
 	fmt.Println("path:", path)
 
 	// split the path by /
+	if path == "/" {
+		return 0
+	}
+
 	TempStepsPath := strings.Split(path, "/")
 	StepsPath := TempStepsPath[1:]
 
@@ -118,6 +122,7 @@ func searchInodeByPath_rec(StepsPath []string, Inode Structs.Inode, file *os.Fil
 
 			} else {
 				fmt.Print("indirectos")
+				return -1
 			}
 		}
 		index++

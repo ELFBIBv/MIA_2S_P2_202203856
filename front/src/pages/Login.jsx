@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import CommandService from "../services/CommandService";
 import Swal from "sweetalert2";
 
 const Login = ({ onLogin }) => {
@@ -11,24 +10,6 @@ const Login = ({ onLogin }) => {
     const handleLogin = async () => {
         const loginCommand = `login -user="${userId}" -pass="${password}" -id="${partitionId}"`;
 
-        // CommandService.parseAndSend(loginCommand)
-        //     .then((response) => {
-        //         console.log("Respuesta completa del servidor:", response);
-        //
-        //         // Guardar el usuario en localStorage
-        //         localStorage.setItem("loggedUser", userId);
-        //         setOutput(`Login exitoso: ${JSON.stringify(response)}`);
-        //         Swal.fire("Inicio de sesión exitoso", "Bienvenido a la aplicación", "success");
-        //
-        //         // Llamar a la función pasada como prop para notificar el login
-        //         if (onLogin) onLogin(userId);
-        //     })
-        //     .catch((error) => {
-        //         console.error("Error completo recibido:", error);
-        //         const errorMessage = error.response?.data?.error || "Error desconocido";
-        //         Swal.fire("Error al iniciar sesión", errorMessage, "error");
-        //         setOutput(`Error: ${errorMessage}`);
-        //     });
         try {
             const response = await fetch('http://localhost:8080/execute', {
                 method: 'POST',

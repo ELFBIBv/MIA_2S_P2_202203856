@@ -103,19 +103,6 @@ func createDirectory(dirPath string, sb *Structs.Superblock, file *os.File, p bo
 		return err
 	}
 
-	// Imprimir inodos y bloques
-	//fmt.Println("\nImprimiendo inodos y bloques")
-	//err = FileSystem.PrintInodes(file, *sb)
-	//if err != nil {
-	//	fmt.Println("Error al imprimir inodos:", err)
-	//	return err
-	//}
-	//err = FileSystem.PrintBlocksInOrder(file, *sb)
-	//if err != nil {
-	//	fmt.Println("Error al imprimir bloques:", err)
-	//	return err
-	//}
-
 	return nil
 }
 
@@ -306,38 +293,12 @@ func CreateFolderInInode(sb *Structs.Superblock, file *os.File, inodeIndex int32
 				sb.S_free_inodes_count--
 				sb.S_first_ino += sb.S_inode_size
 
-				// Crear el bloque de la carpeta
-				//folderBlock := &Structs.Folderblock{
-				//	B_content: [4]Structs.Content{
-				//		{B_name: [12]byte{'.'}, B_inodo: block.B_content[indexContent].B_inodo},
-				//		{B_name: [12]byte{'.', '.'}, B_inodo: inodeIndex},
-				//		{B_name: [12]byte{'-'}, B_inodo: -1},
-				//		{B_name: [12]byte{'-'}, B_inodo: -1},
-				//	},
-				//}
-
-				// Serializar el bloque de la carpeta
-				//err = folderBlock.Serialize(path, int64(sb.S_first_blo))
-				//fmt.Println("el bloque se quiere escribir en el byte (2):", int64(sb.S_first_blo))
-				//err = Utilities.WriteObject(file, *folderBlock, int64(sb.S_first_blo))
-				//if err != nil {
-				//	fmt.Println("Error al escribir el bloque de la carpeta:", err)
-				//	return err
-				//}
-
 				// Actualizar el bitmap de bloques
-				//err = sb.UpdateBitmapBlock(path)
 				err = FileSystem.UpdateBitmapBlock(file, sb)
 				if err != nil {
 					fmt.Println("Error al actualizar el bitmap de bloques:", err)
 					return err
 				}
-
-				// Actualizar el superbloque
-				//sb.S_blocks_count++
-				//sb.S_free_blocks_count--
-				//sb.S_first_blo += sb.S_block_size
-
 				return nil
 			}
 		}
