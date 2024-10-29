@@ -720,7 +720,7 @@ func fnMkfile(matches [][]string) error {
 		}
 
 		flagValue := strings.ToLower(match[2]) //trings.ToLower(match[2]): Captura y guarda el valor del flag, asegurándose de que esté en minúsculas
-		if flagName == "path" {
+		if flagName == "cont" {
 			flagValue = match[2]
 		}
 

@@ -71,9 +71,6 @@ const Visualizador = () => {
         // Guardar la partición seleccionada
         setPath("/");
         setSelectedPartition(selectedPartition);
-        console.log("FilePath: ", path);
-        console.log("DiskPath: ", selectedDisk);
-        console.log("PartitionName: ", selectedPartition);
 
         // Hacer la solicitud al backend para obtener los archivos
         fetch("http://localhost:8080/readfiles", {
@@ -93,9 +90,19 @@ const Visualizador = () => {
             });
     };
 
-    const fetchFiles = (fileSelected) => {
+    const fetchFile = (fileSelected) => {
         // Guardar la partición seleccionada
-        setPath(path + fileSelected);
+        var pathTemp = path;
+        if (path === "/"){
+            setPath(path + fileSelected);
+            pathTemp = path + fileSelected;
+        } else {
+            setPath(path +"/"+ fileSelected);
+            pathTemp = path +"/"+ fileSelected;
+        }
+        console.log("FilePath: ", path);
+        console.log("DiskPath: ", selectedDisk);
+        console.log("PartitionName: ", selectedPartition);
 
         // Hacer la solicitud al backend para obtener los archivos
         fetch("http://localhost:8080/readfiles", {
@@ -103,7 +110,7 @@ const Visualizador = () => {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({FilePath: path,DiskPath: selectedDisk, PartitionName: selectedPartition}),
+            body: JSON.stringify({FilePath: pathTemp,DiskPath: selectedDisk, PartitionName: selectedPartition}),
         })
             .then((response) => response.json())
             .then(async (data) => {
@@ -145,7 +152,7 @@ const Visualizador = () => {
                 <FileSystemButtons getDiskName={getDiskName}
                                    selectedPartition={selectedPartition}
                                    handleSearch={handleSearch}
-                                   fetchFiles={fetchFiles}
+                                   fetchFile={fetchFile}
                                    results={results}
                                    path={path}
                                    setPath={setPath}

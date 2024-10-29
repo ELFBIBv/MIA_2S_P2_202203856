@@ -5,6 +5,8 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"proyecto1/Analyzer"
+	"proyecto1/Commands"
 	"proyecto1/FileSystem"
 	"proyecto1/Structs"
 	"proyecto1/Utilities"
@@ -59,8 +61,9 @@ func ListPartitions(path string) ([]PartitionInfo, error) {
 
 // la estructura de los archivos de salida
 type files struct {
-	Name string
-	Type string
+	Name    string
+	Type    string
+	Content string
 }
 
 func recolectFiles(filePath string, diskPath string, partitionName string) (error, []files) {
@@ -90,11 +93,13 @@ func recolectFiles(filePath string, diskPath string, partitionName string) (erro
 	copy(nameBytes[:], partitionName)
 	Structs.PrintMBR(TempMBR)
 	index := 0
+	idPartition := ""
 	for i := 0; i < 4; i++ {
 		// Verificar si el nombre coincide
 		if bytes.Equal(TempMBR.Partitions[i].Name[:], nameBytes[:]) {
 			found = true
 			index = i
+			idPartition = string(TempMBR.Partitions[i].Id[:])
 			fmt.Println("posicion de particion: ", i)
 			break
 		}
@@ -123,6 +128,9 @@ func recolectFiles(filePath string, diskPath string, partitionName string) (erro
 	}
 
 	Structs.PrintSuperblock(sb)
+	if sb.S_filesystem_type != 2 && sb.S_filesystem_type != 3 {
+		return errors.New("Error REP: El sistema de archivos no es ext2 ni ext3"), nil
+	}
 
 	// este es el numero de inodo del archivo
 	inode_number := FileSystem.SearchInodeByPath(filePath, file, sb)
@@ -130,6 +138,8 @@ func recolectFiles(filePath string, diskPath string, partitionName string) (erro
 		fmt.Print("Error REP: No se encontró el archivo")
 		return errors.New("Error REP: No se encontró el archivo"), nil
 	}
+
+	fmt.Printf("Numero de inodo: %d\n", inode_number)
 
 	//ahora vamos a leer el inodo
 	var inode = Structs.Inode{}
@@ -187,14 +197,23 @@ func recolectFiles(filePath string, diskPath string, partitionName string) (erro
 			if block.B_content[indexContent].B_inodo == -1 {
 				break
 			}
+
+			// Es una carpeta
 			file.Name = name
+			file.Type = "folder"
+			file.Content = ""
+
+			// Es un archivo
+			fmt.Println("permisos: ", Analyzer.UserPermissions)
 
 			if strings.Contains(name, ".") {
-				// Es un archivo
+				err, contenido := Commands.Cat([]string{filePath + "/" + name}, idPartition, Analyzer.UserPermissions)
+				if err != nil {
+					fmt.Println("Error al leer el archivo:", err)
+					return err, nil
+				}
+				file.Content = contenido
 				file.Type = "file"
-			} else {
-				// Es una carpeta
-				file.Type = "folder"
 			}
 			arrayFiles = append(arrayFiles, file)
 		}

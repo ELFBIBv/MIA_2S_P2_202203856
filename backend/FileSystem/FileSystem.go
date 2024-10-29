@@ -54,6 +54,7 @@ func SearchInodeByPath(path string, file *os.File, tempSuperblock Structs.Superb
 	fmt.Println("path:", path)
 
 	// split the path by /
+	fmt.Println("el path es: ", path)
 	if path == "/" {
 		return 0
 	}
@@ -138,10 +139,10 @@ func GetInodeFileData(Inode Structs.Inode, file *os.File, tempSuperblock Structs
 	// define content as a string
 	var content string
 
-	if Inode.I_type[0] != '1' {
-		fmt.Println("Inode no es un archivo, es de tipo:", Inode.I_type[0])
-		return "", errors.New("inode no es un archivo")
-	}
+	//if Inode.I_type[0] != '1' {
+	//	fmt.Println("Inode no es un archivo, es de tipo:", Inode.I_type[0])
+	//	return "", errors.New("inode no es un archivo")
+	//}
 
 	// Iterate over i_blocks from Inode
 	for _, block := range Inode.I_block {

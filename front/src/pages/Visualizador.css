@@ -36,6 +36,16 @@
     margin: 0 auto; /* Centrar imagen */
 }
 
+#FileImage {
+    background-image: url('/public/File.png'); /* Ruta de la imagen */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 60px; /* Tamaño más pequeño como la segunda imagen */
+    height: 60px;
+    margin: 0 auto; /* Centrar imagen */
+}
+
 .card-title {
     font-size: 0.9rem; /* Ajustar el tamaño del texto */
     margin-top: 5px;
