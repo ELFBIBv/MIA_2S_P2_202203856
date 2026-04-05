@@ -1,7 +1,7 @@
 
 //error de espacio insuficiente.
 -MkdiSk -sIzE=2000 -unit=k -PaTh="D:/Users/jm543/proyectos MIA/Proyecto1/particiones/Disk1.mia"
--mkdisk -size=3000 -unit=K -fit=BF -path="/home/alvaro/Disks/disk1.mia"
+-mkdisk -size=3000 -unit=K -fit=BF -path="D:/Users/jm543/Disks/disk1.mia"
 -mkdisk -size=3000 -unit=K -fit=BF -path="D:/Users/jm543/pruebasxd/disk1.mia"
 
 -rmdisk -path="D:/Users/jm543/proyectos MIA/Proyecto1/particiones/Disk1.mia"

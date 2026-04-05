@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import './Visualizador.css';
 import DisksButtons from "../components/DisksButtons";
 import PartitionsButtons from "../components/PartitionsButtons";
-import Swal from "sweetalert2";
 import FileSystemButtons from "../components/FileSystemButtons";
 
 const Visualizador = () => {
@@ -114,7 +113,6 @@ const Visualizador = () => {
         })
             .then((response) => response.json())
             .then(async (data) => {
-                // await Swal.fire("Error al iniciar sesión", data, "error");
                 setResults(data || []);
             })
             .catch((error) => {

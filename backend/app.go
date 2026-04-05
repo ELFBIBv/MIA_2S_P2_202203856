@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/gorilla/mux"
-	"github.com/rs/cors"
 	"log"
 	"net/http"
+
+	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 type CodeExecutionRequest struct {
@@ -26,6 +27,12 @@ func main() {
 	r.HandleFunc("/getMountedPartitionsForPathDisk", GetMountedPartitionForPathDisk).Methods("POST")
 	r.HandleFunc("/readfiles", ReadFilesHandler).Methods("POST")
 
+	//para que acepte solo peticiones locales se usa:
+	// c := cors.New(cors.Options{
+	// 	...
+	//	AllowedOrigins: []string{"http://localhost:3000", "http://[IP_ADDRESS]"},
+	// })
+	//esto es para que acepte peticiones desde cualquier lugar
 	c := cors.New(cors.Options{
 		AllowCredentials: true,
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
@@ -37,5 +44,9 @@ func main() {
 	handler := c.Handler(r)
 
 	log.Println("Servidor iniciado en el puerto 8080")
+	// estos 2 de abajo son solamente para local
+	// log.Fatal(http.ListenAndServe("localhost:8080", handler))
+	// log.Fatal(http.ListenAndServe("127.0.0.1:8080", handler))
+	//el de abajo ya acepta peticiones desde donde sea (0.0.0.0)
 	log.Fatal(http.ListenAndServe(":8080", handler))
 }
